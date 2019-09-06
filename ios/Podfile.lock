@@ -1,0 +1,58 @@
+PODS:
+  - AMap3DMap (6.4.0):
+    - AMapFoundation (~> 1.5)
+  - amap_base (0.1.8):
+    - AMapLocation
+    - AMapNavi
+    - AMapSearch
+    - Flutter
+    - MJExtension
+  - AMapFoundation (1.5.4)
+  - AMapLocation (2.6.1):
+    - AMapFoundation (~> 1.4)
+  - AMapNavi (6.3.0):
+    - AMap3DMap (~> 6.4)
+    - AMapFoundation (~> 1.5)
+  - AMapSearch (6.1.1):
+    - AMapFoundation (~> 1.4)
+  - Flutter (1.0.0)
+  - MJExtension (3.0.15.1)
+  - shared_preferences (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - amap_base (from `.symlinks/plugins/amap_base/ios`)
+  - Flutter (from `.symlinks/flutter/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AMap3DMap
+    - AMapFoundation
+    - AMapLocation
+    - AMapNavi
+    - AMapSearch
+    - MJExtension
+
+EXTERNAL SOURCES:
+  amap_base:
+    :path: ".symlinks/plugins/amap_base/ios"
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+
+SPEC CHECKSUMS:
+  AMap3DMap: ebfb4e202c2bee9c3a6c296264e29f12436b6379
+  amap_base: 0d205973fa29a6e232ffc4b48c1e3d8a7f20a3a3
+  AMapFoundation: bff8688722e886feda4edd77f1443746ddd7e2e2
+  AMapLocation: cf024b53dc03663efb4ea4bcce27d4cce58bb97a
+  AMapNavi: 03c899c5a0d76e1222dc4c317d2a6a9b72449cff
+  AMapSearch: 3dcbf85c403a2a0fe0eda5318caabc272b31f5e1
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  MJExtension: 19bc33ce2eee2d319760f5622562cf581a6ff756
+  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
+
+PODFILE CHECKSUM: e8988baac3a50f787b9d3ed7ca44957b442f92a7
+
+COCOAPODS: 1.7.4
