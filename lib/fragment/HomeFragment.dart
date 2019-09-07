@@ -31,7 +31,7 @@ class HomeFragment extends StatefulWidget {
 }
 
 class _HomeFragmentState extends State<HomeFragment>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, TickerProviderStateMixin {
   List<HomePageBeanResobj> mDataHome = new List();
   bool isVisible = false;
   var isTure = true;
@@ -48,6 +48,9 @@ class _HomeFragmentState extends State<HomeFragment>
   }
 
   HomeBeanProvide homeBeanProvide;
+  AnimationController controllerHeight;
+
+  Animation<double> animationTopBar;
 
   @override
   void initState() {
@@ -60,269 +63,270 @@ class _HomeFragmentState extends State<HomeFragment>
     });
     super.initState();
     _controller = new TabController(length: 11, vsync: this);
+    controllerHeight = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 200),
+    );
+    animationTopBar = Tween<double>(begin:1.0, end:0).animate(controllerHeight);
+    animationTopBar.addListener(() {
+      setState(() {});
+    });
+    controllerHeight.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(primaryColor: Color.fromARGB(255, 235, 122, 153)),
-      home: Scaffold(
-        appBar: HomeFragmentAppBar((value) {
-          colorsTv = value;
-          setState(() {});
-        }),
-        body: Column(
-          children: <Widget>[
-            //第一行：TabBar
-            HomePageOne(_controller, title),
-            BootomView(),
-            Expanded(
-              child:
-                  //第二行：TabBarView
-                  TabBarView(
-                children: <Widget>[
-                  ListView(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                          child: Image.asset(
-                            "images/lonnv10.jpg",
-                            fit: BoxFit.cover,
-                            height: 120.0,
-                          ),
+    return Scaffold(
+      appBar: HomeFragmentAppBar(animationTopBar.value, (value) {
+        colorsTv = value;
+        setState(() {});
+      }),
+      body: Column(
+        children: <Widget>[
+          //第一行：TabBar
+          HomePageOne(_controller, title),
+          BootomView(),
+          Expanded(
+            child:
+                //第二行：TabBarView
+                TabBarView(
+              children: <Widget>[
+                ListView(
+                  children: <Widget>[
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                        child: Image.asset(
+                          "images/lonnv10.jpg",
+                          fit: BoxFit.cover,
+                          height: 120.0,
                         ),
                       ),
-                      SizedBox(
-                        height: 200.0,
-                        width: MediaQuery.of(context).size.width,
-                        child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemExtent: MediaQuery.of(context).size.width / 5,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.all(10.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Column(
-                                    children: <Widget>[
-                                      Container(
-                                        child: Icon(
-                                          Icons.settings_applications,
-                                          size: 40.0,
-                                          color: Colors.greenAccent,
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(top: 10.0),
-                                        child: Text(name),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(top: 20),
-                                        child: Icon(
-                                          Icons.settings_applications,
-                                          size: 40.0,
-                                          color: Colors.greenAccent,
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(top: 10.0),
-                                        child: Text(name),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                          itemCount: 5,
-                        ),
-                      ),
-                      Container(
-                        height: 1.0,
-                        color: Colors.black12,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) {
-                                  return MyHomePage();
-                                }));
-                              },
-                              child: Padding(
-                                padding:
-                                    EdgeInsets.only(left: 10.0, right: 10.0),
-                                child: Text(
-                                  CommonUtils.getLocale(context).app_cancel,
-                                  style: TextStyle(color: colorsTv),
-                                ),
-                              ),
-                            ),
-                            Text(
-                              "16小时之前",
-                              style: TextStyle(color: Colors.black26),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                homeBeanProvide.setLiveTitleName(0, "😄");
-                                //不需要
-                              },
-                              child: Text("我的关注"),
-                            ),
-                            Text(
-                              "直播了见电台",
-                              style: TextStyle(color: Colors.black26),
-                            ),
-                            Icon(
-                              Icons.home,
-                              color: Colors.black26,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 1.0,
-                        color: Colors.black12,
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                        height: 50.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text("推荐直播"),
-                            Row(
+                    ),
+                    SizedBox(
+                      height: 200.0,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemExtent: MediaQuery.of(context).size.width / 5,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                Text("缓一缓"),
-                                Icon(
-                                  Icons.directions_run,
-                                  color: Colors.black26,
-                                  size: 20.0,
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        child: mDataHome.length == 0
-                            ? Container()
-                            : GridView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        childAspectRatio: 1.2),
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      homeBeanProvide.deletIndex(index);
-                                      setState(() {});
-                                    },
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 15.0, right: 10.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.all(3.0),
-                                            child: Stack(
-                                              alignment: Alignment.bottomCenter,
-                                              children: <Widget>[
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(6.0)),
-                                                  child: Image.network(
-                                                    mDataHome[index].liveImg,
-                                                    height: 120,
-                                                    width: 200,
-                                                    fit: BoxFit.fitWidth,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 5.0),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        mDataHome[index]
-                                                            .livePersonName,
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      Row(
-                                                        children: <Widget>[
-                                                          Icon(
-                                                            Icons.perm_identity,
-                                                            color: Colors.white,
-                                                            size: 20,
-                                                          ),
-                                                          Text(
-                                                            "8.5万人",
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: Colors
-                                                                    .white),
-                                                          )
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Text("三局杀撸游戏ß"),
-                                          Text(
-                                            "其他游戏",
-                                            style: TextStyle(
-                                                color: Colors.black26),
-                                          ),
-                                        ],
+                                Column(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Icon(
+                                        Icons.settings_applications,
+                                        size: 40.0,
+                                        color: Colors.greenAccent,
                                       ),
                                     ),
-                                  );
-                                },
-                                itemCount: mDataHome.length,
-                              ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 10.0),
+                                      child: Text(name),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 20),
+                                      child: Icon(
+                                        Icons.settings_applications,
+                                        size: 40.0,
+                                        color: Colors.greenAccent,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 10.0),
+                                      child: Text(name),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        itemCount: 5,
                       ),
-                    ],
-                  ),
-                  Icon(Icons.add),
-                  Icon(Icons.add),
-                  Icon(Icons.add),
-                  Icon(Icons.add),
-                  Icon(Icons.add),
-                  Icon(Icons.add),
-                  Icon(Icons.add),
-                  Icon(Icons.add),
-                  Icon(Icons.add),
-                  HomePageEnd(),
-                ],
-                controller: _controller,
-              ),
+                    ),
+                    Container(
+                      height: 1.0,
+                      color: Colors.black12,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) {
+                                return MyHomePage();
+                              }));
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                              child: Text(
+                                CommonUtils.getLocale(context).app_cancel,
+                                style: TextStyle(color: colorsTv),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "16小时之前",
+                            style: TextStyle(color: Colors.black26),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              homeBeanProvide.setLiveTitleName(0, "😄");
+                              //不需要
+                            },
+                            child: Text("我的关注"),
+                          ),
+                          Text(
+                            "直播了见电台",
+                            style: TextStyle(color: Colors.black26),
+                          ),
+                          Icon(
+                            Icons.home,
+                            color: Colors.black26,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 1.0,
+                      color: Colors.black12,
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                      height: 50.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text("推荐直播"),
+                          Row(
+                            children: <Widget>[
+                              Text("缓一缓"),
+                              Icon(
+                                Icons.directions_run,
+                                color: Colors.black26,
+                                size: 20.0,
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      child: mDataHome.length == 0
+                          ? Container()
+                          : GridView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2, childAspectRatio: 1.2),
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    homeBeanProvide.deletIndex(index);
+                                    setState(() {});
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 15.0, right: 10.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.all(3.0),
+                                          child: Stack(
+                                            alignment: Alignment.bottomCenter,
+                                            children: <Widget>[
+                                              ClipRRect(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(6.0)),
+                                                child: Image.network(
+                                                  mDataHome[index].liveImg,
+                                                  height: 120,
+                                                  width: 200,
+                                                  fit: BoxFit.fitWidth,
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 5.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      mDataHome[index]
+                                                          .livePersonName,
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.white),
+                                                    ),
+                                                    Row(
+                                                      children: <Widget>[
+                                                        Icon(
+                                                          Icons.perm_identity,
+                                                          color: Colors.white,
+                                                          size: 20,
+                                                        ),
+                                                        Text(
+                                                          "8.5万人",
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              color:
+                                                                  Colors.white),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Text("三局杀撸游戏ß"),
+                                        Text(
+                                          "其他游戏",
+                                          style:
+                                              TextStyle(color: Colors.black26),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                              itemCount: mDataHome.length,
+                            ),
+                    ),
+                  ],
+                ),
+                Icon(Icons.add),
+                Icon(Icons.add),
+                Icon(Icons.add),
+                Icon(Icons.add),
+                Icon(Icons.add),
+                Icon(Icons.add),
+                Icon(Icons.add),
+                Icon(Icons.add),
+                Icon(Icons.add),
+                HomePageEnd(),
+              ],
+              controller: _controller,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

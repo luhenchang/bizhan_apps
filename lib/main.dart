@@ -33,20 +33,22 @@ class MyApp extends StatefulWidget {
   }
 }
 
-class _StateWidget extends State<MyApp> {
+class _StateWidget extends State<MyApp> with TickerProviderStateMixin{
   Locale _locale = const Locale('zh', 'CH');
   final store = new Store<GSYState>(
     appReducer,
 
     ///初始化数据
     initialState: new GSYState(
-        themeData: CommonUtils.getThemeData(GSYColors.primarySwatch),
+        themeData: CommonUtils.getThemeData(Color.fromRGBO(255, 255, 255, 1)),
         locale: Locale('zh', 'CH')),
   );
+
 
   @override
   void initState() {
     super.initState();
+
   }
 
   @override

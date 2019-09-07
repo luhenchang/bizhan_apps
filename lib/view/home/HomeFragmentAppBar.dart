@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 
 class HomeFragmentAppBar extends StatefulWidget implements PreferredSizeWidget {
   ValueChanged<dynamic>valueChanged;
-  HomeFragmentAppBar(this.valueChanged);
+  var heightScale=1.0;
+  HomeFragmentAppBar(double heightScale,valueChanged){
+    this.valueChanged=valueChanged;
+    print(heightScale);
+    if(heightScale!=null){
+       heightScale=heightScale;
+
+    }
+  }
   @override
   State<StatefulWidget> createState() {
     return _HomeFragmentAppBarState();
   }
 
   @override
-  Size get preferredSize => Size(100, 50);
+  Size get preferredSize => Size(100, 50*heightScale);
 }
 
 class _HomeFragmentAppBarState extends State<HomeFragmentAppBar> {
@@ -33,7 +41,7 @@ class _HomeFragmentAppBarState extends State<HomeFragmentAppBar> {
                 width: 9.1,
                 height: 9.1,
                 decoration: BoxDecoration(
-                    color: Colors.yellowAccent,
+                    color: Colors.red,
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.white, width: 1)),
               )
@@ -48,10 +56,10 @@ class _HomeFragmentAppBarState extends State<HomeFragmentAppBar> {
               height: 30.0,
               child: Icon(
                 Icons.search,
-                color: Colors.white,
+                color: Colors.grey,
               ),
               decoration: BoxDecoration(
-                  color: Colors.black26,
+                  color: Colors.black26.withOpacity(0.05),
                   borderRadius: BorderRadius.all(Radius.circular(20.0))),
             ),
           ),
@@ -64,7 +72,8 @@ class _HomeFragmentAppBarState extends State<HomeFragmentAppBar> {
             padding: EdgeInsets.only(left: 25.0),
             child: Icon(
               Icons.settings_applications,
-              color: Colors.white,
+              color: Colors.grey.withOpacity(0.5),
+
             ),
           ),
           Padding(
@@ -75,7 +84,7 @@ class _HomeFragmentAppBarState extends State<HomeFragmentAppBar> {
               },
               child: Icon(
                 Icons.message,
-                color: Colors.white,
+                color: Colors.grey.withOpacity(0.5),
               ),
             ),
           ),

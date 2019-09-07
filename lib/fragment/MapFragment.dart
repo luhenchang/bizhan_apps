@@ -66,6 +66,7 @@ class _MapFragmentState extends State<MapFragment> {
         title: InkWell(
           onTap: () {
             _controller.getCenterLatlng().then((lat) {
+              print("中心点:=" + lat.toString());
               mLatList.add(lat);
               var markOptionCenter = MarkerOptions(
                   title: "我的圆形",
@@ -88,45 +89,64 @@ class _MapFragmentState extends State<MapFragment> {
           child: Text('显示地图'),
         ),
       ),
-      body: Column(
+      body: Stack(
+        alignment:Alignment.center,
         children: <Widget>[
-          GestureDetector(
-            onTapDown: (details) {
-              var positionDetails = details.globalPosition;
-              _showExit(context, positionDetails);
-              //showInforWindow(context, positionDetails);
-            },
-            child: Text("弹窗可怕"),
-          ),
-          Flexible(
-            child: AMapView(
-              onAMapViewCreated: (controller) {
-                _controller = controller;
-                _myLocationStyle.copyWith(
-                    image: "images/logo.png",
-                    showMyLocation: true,
-                    radiusFillColor: Colors.black,
-                    strokeWidth: 50,
-                    myLocationType: LOCATION_TYPE_FOLLOW_NO_CENTER,
-                    showsAccuracyRing: true,
-                    interval: 1000);
-                _controller.setMyLocationStyle(_myLocationStyle);
-                UiSettings uiSetting = new UiSettings(
-                    isCompassEnabled: true, isRotateGesturesEnabled: false);
-                _controller.setUiSettings(uiSetting);
-                /* int mapType = MAP_TYPE_SATELLITE;
+          Column(
+            children: <Widget>[
+              GestureDetector(
+                onTapDown: (details) {
+                  var positionDetails = details.globalPosition;
+                  _showExit(context, positionDetails);
+                  //showInforWindow(context, positionDetails);
+                },
+                child: Text("弹窗可怕"),
+              ),
+              Flexible(
+                child: AMapView(
+                  onAMapViewCreated: (controller) {
+                    _controller = controller;
+                    _myLocationStyle.copyWith(
+                        image: "images/logo.png",
+                        showMyLocation: true,
+                        radiusFillColor: Colors.black,
+                        strokeWidth: 50,
+                        myLocationType: LOCATION_TYPE_FOLLOW_NO_CENTER,
+                        showsAccuracyRing: true,
+                        interval: 1000);
+                    _controller.setMyLocationStyle(_myLocationStyle);
+                    UiSettings uiSetting = new UiSettings(
+                        isCompassEnabled: true, isRotateGesturesEnabled: false);
+                    _controller.setUiSettings(uiSetting);
+                    /* int mapType = MAP_TYPE_SATELLITE;
                   _controller.setMapType(mapType);*/
-                setState(() {});
-              },
-              amapOptions: AMapOptions(
-                compassEnabled: false,
-                zoomControlsEnabled: true,
-                logoPosition: LOGO_POSITION_BOTTOM_CENTER,
-                camera: CameraPosition(
-                  target: LatLng(40.851827, 111.801637),
-                  zoom: 15,
+                    setState(() {});
+                  },
+                  amapOptions: AMapOptions(
+                    compassEnabled: false,
+                    zoomControlsEnabled: true,
+                    logoPosition: LOGO_POSITION_BOTTOM_CENTER,
+                    camera: CameraPosition(
+                      target: LatLng(40.851827, 111.801637),
+                      zoom: 15,
+                    ),
+                  ),
                 ),
               ),
+            ],
+          ),
+          Container(
+            alignment:Alignment.center,
+            height:30,
+            width:30,
+            child: Text("中",style:TextStyle(color:Colors.orangeAccent,fontWeight:FontWeight.bold),),
+            decoration:BoxDecoration(
+              color:Colors.lightBlue,
+              borderRadius:BorderRadius.all(Radius.circular(350)),
+              boxShadow:[
+                BoxShadow(color:Colors.orangeAccent,blurRadius:8)
+              ]
+
             ),
           ),
         ],
@@ -162,7 +182,7 @@ class _MapFragmentState extends State<MapFragment> {
   ///构建退出按钮
   Widget _buildExit() {
     return Container(
-      color:Colors.white,
+      color: Colors.white,
       width: 91,
       height: 36,
       child: Stack(
@@ -196,8 +216,8 @@ class _MapFragmentState extends State<MapFragment> {
       PopRoute(
         child: Popup(
           child: _buildExit(),
-          left:positionDetails.dx,
-          top: positionDetails.dy+20,
+          left: positionDetails.dx,
+          top: positionDetails.dy + 20,
           onClick: () {
             print("exit");
           },
